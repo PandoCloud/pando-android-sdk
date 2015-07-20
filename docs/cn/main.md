@@ -65,15 +65,15 @@ app需要先实现一个处理wifi配置结果的handler,该handler必须继承*
 ```
 
 可能接受到的消息类型：
-|message| what  | obj |
-|       | ------------- | ------------- |
+|       | what  | obj |
+| ----- | ------------- | ------------- |
 |       | WifiConfigManager.CONFIG_SUCCESS  | devicekey(String)  |
 |       | WifiConfigManager.CONFIG_FAILED   |   失败原因(String)   |
 |       | WifiConfigManager.DEVICE_CONNECT_FAILED |  无   |
 |       | WifiConfigManager.DEVICE_SEND_FAILED |  无   |
 |       | WifiConfigManager.DEVICE_RECV_FAILED |  无   |
 
-CONFIG_SUCCESS
+当接受到CONFIG_SUCCESS消息后，可以从消息的内容中获取到devicekey，devicekey是设备操作的唯一凭证。
 
 ###### 2. 开始配置
 app调用WifiConfigManager的startConfig方法启动配置：
@@ -88,7 +88,7 @@ app调用WifiConfigManager的startConfig方法启动配置：
 	 */
 public static void startConfig(Context context, String mode, String ssid, String pwd)
 ```
-> 注意：如果是hotspot模式，app需保证用户已经连接上设备发出的wifi热点，app可以提示用户连接或者采用sdk中提供的[工具方法](#工具方法)自动连接上设备的wifi热点。
+> 注意：如果是hotspot模式，app需保证用户已经连接上设备发出的wifi热点，app可以提示用户连接或者采用程序自动连接wifi热点。
 
 ###### 3. 结束配置
 当用户主动取消配置或者配置出错时，app可以调用stopConfig方法结束配置：
@@ -98,4 +98,9 @@ public static void stopConfig()
 ```
 > 注意：如果是hotspot模式，wifi配置成功后app如果需要获取设备信息（devicekey），则需要继续保持手机连接在设备ap上，等获取设备信息成功后，再调用stopConfig结束配置并断开和热点的连接
 
+###### 4. 示例代码
+
+https://github.com/PandoCloud/freeiot-android/tree/master/app/src/main/java/com/pandocloud/freeiot/ui/device/config
+
 ### 工具方法
+TODO
