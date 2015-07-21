@@ -74,6 +74,11 @@ app需要先实现一个处理wifi配置结果的handler,该handler必须继承*
 | WifiConfigManager.DEVICE_SEND_FAILED |  无   |
 | WifiConfigManager.DEVICE_RECV_FAILED |  无   |
 
+First Header  | Second Header
+------------- | -------------
+Content Cell  | Content Cell
+Content Cell  | Content Cell
+
 当接受到CONFIG_SUCCESS消息后，可以从消息的内容中获取到devicekey，devicekey是设备操作的唯一凭证。
 
 ###### 2. 开始配置
