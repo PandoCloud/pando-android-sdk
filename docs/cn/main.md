@@ -47,7 +47,7 @@ sdk依赖若干系统权限，将如下权限设置加到<manifest>标签下：
 在wifi环境下，app可以利用sdk将当前wifi的ssid和密码发送给wifi设备，如果ssid和密码正确，wifi设备就能成功联网。目前根据设备类型不同，支持两种配置模式：
 
 * **热点模式**(hotspot)：该方法基本原理是设备启动配置模式后，会开启一个wifi热点，用户将手机连接上该wifi（无密码）后，将ssid和密码发送给设备。
-* **智能模式**(smart):该方法基本原理是app直接将ssid名和密码广播到当前局域网，wifi设备通过抓取探测路由器的包长变化解码出密码信息。该方法不需要用户有额外的操作，体验较好，如果设备支持的情况下，推荐采用该模式。
+* **智能模式**(smartlink):该方法基本原理是app直接将ssid名和密码广播到当前局域网，wifi设备通过抓取探测路由器的包长变化解码出密码信息。该方法不需要用户有额外的操作，体验较好，如果设备支持的情况下，推荐采用该模式。
 
 ##### 接口说明：
 wifi设备配置由类*com.pandocloud.android.config.wifi.WifiConfigManager*提供接口，相关接口：
@@ -83,7 +83,7 @@ app调用WifiConfigManager的startConfig方法启动配置：
     /**
 	 * 启动设备wifi配置
 	 * @param context 传入当前activity的context
-	 * @param mode 配置模式,根据设备类型可传入"hotspot"或"smart"
+	 * @param mode 配置模式,根据设备类型可传入"hotspot"或"smartlink"
 	 * @param ssid 需要连接的wifi名
 	 * @param pwd 对应的wifi密码
 	 */
