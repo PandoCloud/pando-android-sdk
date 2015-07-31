@@ -103,4 +103,11 @@
         android:id="@+id/message"
         android:text=""/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="取消配置"
+        android:id="@+id/stop"
+        android:onClick="stop" />
+
 </LinearLayout>

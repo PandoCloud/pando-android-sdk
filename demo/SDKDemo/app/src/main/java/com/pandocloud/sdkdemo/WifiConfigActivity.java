@@ -1,14 +1,22 @@
 package com.pandocloud.sdkdemo;
 
-import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.TextView;
 
+import com.pandocloud.android.config.wifi.WifiConfigManager;
+import com.pandocloud.android.config.wifi.WifiConfigMessageHandler;
 
 public class WifiConfigActivity extends ActionBarActivity {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,5 +48,60 @@ public class WifiConfigActivity extends ActionBarActivity {
 
 
     public void start(View view) {
+        String SSIDString ;
+        String PasswordString;
+        RadioButton SmartLink;
+        String ConfigModeString;
+        WifiConfigMessageHandle MyWifiConfigHandle = new WifiConfigMessageHandle(new Handler());
+
+        SSIDString = ((EditText)findViewById(R.id.editHost)).getText().toString();
+        PasswordString = ((EditText)findViewById(R.id.editPort)).getText().toString();
+        SmartLink = (RadioButton)findViewById(R.id.smartlink);
+
+        if(SmartLink.isChecked())
+        {
+            ConfigModeString = "smartlink";
+        }
+        else
+        {
+            ConfigModeString = "hotspot";
+        }
+
+        WifiConfigManager.setMsgHandler(MyWifiConfigHandle);
+        WifiConfigManager.startConfig(WifiConfigActivity.this,ConfigModeString,SSIDString,PasswordString);
+    }
+
+    public void stop(View view)
+    {
+        WifiConfigManager.stopConfig();
+    }
+
+    public class WifiConfigMessageHandle extends WifiConfigMessageHandler {
+        private TextView ConfigMessage = (TextView)findViewById(R.id.message);
+        private String devicekey = "devicekey: ";
+        private String failed = "failed: ";
+
+        public WifiConfigMessageHandle(Handler handler)
+        {
+            super(handler);
+        }
+
+        @Override
+        public void handleMessage(Message var1)
+        {
+            switch(var1.what)
+            {
+                case WifiConfigManager.CONFIG_SUCCESS:
+                    ConfigMessage.setText(devicekey + var1.obj.toString());
+                    break;
+                case WifiConfigManager.CONFIG_FAILED:
+                    ConfigMessage.setText(failed + var1.obj.toString());
+                    break;
+
+                default:
+                    break;
+            }
+
+        }
     }
 }
