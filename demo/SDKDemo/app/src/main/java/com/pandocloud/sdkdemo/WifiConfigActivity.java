@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -68,6 +69,11 @@ public class WifiConfigActivity extends ActionBarActivity {
         }
 
         WifiConfigManager.setMsgHandler(MyWifiConfigHandle);
+
+        Log.v("ConfigModeString", ConfigModeString);
+        Log.v("SSIDString", SSIDString);
+        Log.v("PasswordString", PasswordString);
+
         WifiConfigManager.startConfig(WifiConfigActivity.this,ConfigModeString,SSIDString,PasswordString);
     }
 
