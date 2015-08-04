@@ -38,8 +38,7 @@
         <service
             android:name="com.pandocloud.android.config.wifi.WifiConfigService"
             android:enabled="true"
-            android:exported="false"
-            android:sharedUserId="android.uid.system">
+            android:exported="false">
         </service>
 
     </application>

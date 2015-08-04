@@ -21,7 +21,7 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/editHost"
+            android:id="@+id/editSsid"
             android:layout_weight="0.16" />
     </LinearLayout>
     <LinearLayout
@@ -38,9 +38,8 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="number"
             android:ems="10"
-            android:id="@+id/editPort"
+            android:id="@+id/editPassword"
             android:layout_weight="1" />
 
     </LinearLayout>

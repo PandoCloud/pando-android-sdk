@@ -1,5 +1,7 @@
 package com.pandocloud.sdkdemo;
 
+import android.content.Context;
+import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 
 import com.pandocloud.android.config.wifi.WifiConfigManager;
 import com.pandocloud.android.config.wifi.WifiConfigMessageHandler;
+import com.pandocloud.android.utils.WifiConnectUtil;
 
 public class WifiConfigActivity extends ActionBarActivity {
 
@@ -53,10 +56,34 @@ public class WifiConfigActivity extends ActionBarActivity {
         String PasswordString;
         RadioButton SmartLink;
         String ConfigModeString;
-        WifiConfigMessageHandle MyWifiConfigHandle = new WifiConfigMessageHandle(new Handler());
 
-        SSIDString = ((EditText)findViewById(R.id.editHost)).getText().toString();
-        PasswordString = ((EditText)findViewById(R.id.editPort)).getText().toString();
+        final TextView ConfigMessage = (TextView)findViewById(R.id.message);
+
+        final String devicekey = "devicekey: ";
+        final String failed = "failed: ";
+        WifiConfigMessageHandle MyWifiConfigHandle = new WifiConfigMessageHandle(new Handler() {
+            public void handleMessage(Message var1)
+            {
+                Log.d("wifi config", "config finished...");
+                switch(var1.what)
+                {
+                    case WifiConfigManager.CONFIG_SUCCESS:
+                        ConfigMessage.setText(devicekey + var1.obj.toString());
+                        break;
+                    case WifiConfigManager.CONFIG_FAILED:
+                        ConfigMessage.setText(failed + var1.obj.toString());
+                        break;
+
+                    default:
+                        ConfigMessage.setText(failed + var1.what);
+                        break;
+                }
+
+            }
+        });
+
+        SSIDString = ((EditText)findViewById(R.id.editSsid)).getText().toString();
+        PasswordString = ((EditText)findViewById(R.id.editPassword)).getText().toString();
         SmartLink = (RadioButton)findViewById(R.id.smartlink);
 
         if(SmartLink.isChecked())
@@ -70,11 +97,12 @@ public class WifiConfigActivity extends ActionBarActivity {
 
         WifiConfigManager.setMsgHandler(MyWifiConfigHandle);
 
-        Log.v("ConfigModeString", ConfigModeString);
-        Log.v("SSIDString", SSIDString);
-        Log.v("PasswordString", PasswordString);
+        Log.d("ConfigModeString", ConfigModeString);
+        Log.d("SSIDString", SSIDString);
+        Log.d("PasswordString", PasswordString);
 
-        WifiConfigManager.startConfig(WifiConfigActivity.this,ConfigModeString,SSIDString,PasswordString);
+        WifiConfigManager.startConfig(this, ConfigModeString, SSIDString, PasswordString);
+        ConfigMessage.setText("config start...");
     }
 
     public void stop(View view)
@@ -83,10 +111,6 @@ public class WifiConfigActivity extends ActionBarActivity {
     }
 
     public class WifiConfigMessageHandle extends WifiConfigMessageHandler {
-        private TextView ConfigMessage = (TextView)findViewById(R.id.message);
-        private String devicekey = "devicekey: ";
-        private String failed = "failed: ";
-
         public WifiConfigMessageHandle(Handler handler)
         {
             super(handler);
@@ -95,18 +119,7 @@ public class WifiConfigActivity extends ActionBarActivity {
         @Override
         public void handleMessage(Message var1)
         {
-            switch(var1.what)
-            {
-                case WifiConfigManager.CONFIG_SUCCESS:
-                    ConfigMessage.setText(devicekey + var1.obj.toString());
-                    break;
-                case WifiConfigManager.CONFIG_FAILED:
-                    ConfigMessage.setText(failed + var1.obj.toString());
-                    break;
-
-                default:
-                    break;
-            }
+            getHandler().handleMessage(var1);
 
         }
     }
