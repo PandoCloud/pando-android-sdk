@@ -61,21 +61,21 @@ public class WifiConfigActivity extends ActionBarActivity {
 
         final String devicekey = "devicekey: ";
         final String failed = "failed: ";
-        WifiConfigMessageHandle MyWifiConfigHandle = new WifiConfigMessageHandle(new Handler() {
-            public void handleMessage(Message var1)
+        WifiConfigMessageHandler MyWifiConfigHandle = new WifiConfigMessageHandler(new Handler() {
+            public void handleMessage(Message msg)
             {
                 Log.d("wifi config", "config finished...");
-                switch(var1.what)
+                switch(msg.what)
                 {
                     case WifiConfigManager.CONFIG_SUCCESS:
-                        ConfigMessage.setText(devicekey + var1.obj.toString());
+                        ConfigMessage.setText(devicekey + msg.obj.toString());
                         break;
                     case WifiConfigManager.CONFIG_FAILED:
-                        ConfigMessage.setText(failed + var1.obj.toString());
+                        ConfigMessage.setText(failed + msg.obj.toString());
                         break;
 
                     default:
-                        ConfigMessage.setText(failed + var1.what);
+                        ConfigMessage.setText(failed + msg.what);
                         break;
                 }
 
@@ -108,19 +108,5 @@ public class WifiConfigActivity extends ActionBarActivity {
     public void stop(View view)
     {
         WifiConfigManager.stopConfig();
-    }
-
-    public class WifiConfigMessageHandle extends WifiConfigMessageHandler {
-        public WifiConfigMessageHandle(Handler handler)
-        {
-            super(handler);
-        }
-
-        @Override
-        public void handleMessage(Message var1)
-        {
-            getHandler().handleMessage(var1);
-
-        }
     }
 }

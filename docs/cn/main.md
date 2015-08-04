@@ -52,16 +52,41 @@ sdk依赖若干系统权限，将如下权限设置加到<manifest>标签下：
 ##### 接口说明：
 wifi设备配置由类*com.pandocloud.android.config.wifi.WifiConfigManager*提供接口，相关接口：
 ###### 1. 设置message handler接收配置结果
-app需要先实现一个处理wifi配置结果的handler,该handler必须继承*com.pandocloud.android.config.wifi.WifiConfigMessageHandler*,实现方法：
+app需要先实现一个处理wifi配置结果的android.os.handler实例,在该handler的handleMessage方法中处理设备配置结果：
 
 ``` java
-    public void handleMessage(Message msg);
+    Handler handler = new Handler() {
+            public void handleMessage(Message msg)
+            {
+                Log.d("wifi config", "config finished...");
+                switch(msg.what)
+                {
+                    case WifiConfigManager.CONFIG_SUCCESS:
+                        ConfigMessage.setText(devicekey + msg.obj.toString());
+                        break;
+                    case WifiConfigManager.CONFIG_FAILED:
+                        ConfigMessage.setText(failed + msg.obj.toString());
+                        break;
+                    default:
+                        ConfigMessage.setText(failed + msg.what);
+                        break;
+                }
+
+            }
+        }
 ```
 
-然后将该handler设置给WifiConfigManager，后者会将wifi配置的结果通知app。
+然后创建一个*com.pandocloud.android.config.wifi.WifiConfigMessageHandler*实例，并该handler作为参数初始化WifiConfigMessageHandler:
 
 ``` java
-    public static void setMsgHandler(GateWayMsgHandler msgHandler)
+	WifiConfigMessageHandler myConfigHandler = new WifiConfigMessageHandler(handler);
+```
+
+
+最后将该WifiConfigMessageHandler设置给WifiConfigManager，后者会将wifi配置的结果通知app:
+
+``` java
+    WifiConfigManager.setMsgHandler(myConfigHandler)
 ```
 
 可能接受到的消息类型：
