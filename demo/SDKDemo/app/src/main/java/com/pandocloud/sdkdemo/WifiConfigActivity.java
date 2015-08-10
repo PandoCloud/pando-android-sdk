@@ -70,9 +70,6 @@ public class WifiConfigActivity extends ActionBarActivity {
                     case WifiConfigManager.CONFIG_SUCCESS:
                         ConfigMessage.setText(devicekey + msg.obj.toString());
                         break;
-                    case WifiConfigManager.CONFIG_FAILED:
-                        ConfigMessage.setText(failed + msg.obj.toString());
-                        break;
 
                     default:
                         ConfigMessage.setText(failed + msg.what);

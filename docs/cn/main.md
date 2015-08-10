@@ -64,9 +64,6 @@ app需要先实现一个处理wifi配置结果的android.os.handler实例,在该
                     case WifiConfigManager.CONFIG_SUCCESS:
                         ConfigMessage.setText(devicekey + msg.obj.toString());
                         break;
-                    case WifiConfigManager.CONFIG_FAILED:
-                        ConfigMessage.setText(failed + msg.obj.toString());
-                        break;
                     default:
                         ConfigMessage.setText(failed + msg.what);
                         break;
@@ -91,13 +88,14 @@ app需要先实现一个处理wifi配置结果的android.os.handler实例,在该
 
 可能接受到的消息类型：
 
-what  | obj
-------------- | -------------
-WifiConfigManager.CONFIG_SUCCESS  | devicekey(String)  
-WifiConfigManager.CONFIG_FAILED   | 失败原因(String)   
-WifiConfigManager.DEVICE_CONNECT_FAILED |  无   
-WifiConfigManager.DEVICE_SEND_FAILED |  无   
-WifiConfigManager.DEVICE_RECV_FAILED |  无   
+what  | obj  | 说明
+------------- | ------------- | -------
+WifiConfigManager.CONFIG_SUCCESS  | devicekey(String)   | -
+WifiConfigManager.CONFIG_FAILED   | 无  |  密码错误或热点未连接
+WifiConfigManager.DEVICE_CONNECT_FAILED |  无   | -
+WifiConfigManager.DEVICE_SEND_FAILED |  无   | -
+WifiConfigManager.DEVICE_RECV_FAILED |  无   | -
+WifiConfigManager.CONFIG_TIMEOUT |  无   | 配置超时出错
 
 当接受到CONFIG_SUCCESS消息后，可以从消息的内容中获取到devicekey，devicekey是设备操作的唯一凭证。
 
